@@ -28,7 +28,9 @@ extension UILabel {
     /// when using auto layout
     /// - Returns: The wrapped label
     func wrappedInView() -> UIView {
+        translatesAutoresizingMaskIntoConstraints = false
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(self)
         fillContainer()
         return view

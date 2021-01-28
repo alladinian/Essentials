@@ -71,11 +71,8 @@ public extension String {
         Decimal(string: self)
     }
 
-    /**
-     Encode a String to Base64
-
-     - returns: The string in Base64
-     */
+    /// Encode a String to Base64
+    /// - Returns: The string in Base64
     func toBase64() -> String {
         let input = self
         let data = input.data(using: String.Encoding.utf8)
