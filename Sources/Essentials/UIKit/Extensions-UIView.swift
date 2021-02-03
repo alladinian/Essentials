@@ -46,6 +46,11 @@ public extension UIView {
 
 public extension UIView {
 
+    convenience init(color: UIColor) {
+        self.init()
+        backgroundColor = color
+    }
+
     @available(iOS 11.0, *)
     func roundCorners(_ corners: CACornerMask, radius: CGFloat) {
        layer.cornerRadius  = radius
