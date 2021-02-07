@@ -5,6 +5,8 @@
 //  Created by Vasilis Akoinoglou on 3/2/21.
 //
 
+#if canImport(UIKit)
+
 import UIKit
 
 public class TappableLabel: UILabel {
@@ -24,3 +26,5 @@ public class TappableLabel: UILabel {
         onTap?(self, recognizer)
     }
 }
+
+#endif

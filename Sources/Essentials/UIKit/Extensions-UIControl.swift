@@ -5,6 +5,8 @@
 //  Created by Vasilis Akoinoglou on 4/2/21.
 //
 
+#if canImport(UIKit)
+
 import UIKit
 
 @objc class ClosureSleeve: NSObject {
@@ -33,3 +35,5 @@ public extension UIControl {
         return self
     }
 }
+
+#endif

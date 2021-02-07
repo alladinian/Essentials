@@ -5,37 +5,34 @@
 //  Created by Vasilis Akoinoglou on 18/1/21.
 //
 
-import Foundation
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
+@available(macOS 10.11, *)
 public extension String {
 
-    func regular(size: CGFloat = UIFont.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: UIFont.systemFont(ofSize: size, weight: .regular)])
+    func regular(size: CGFloat = Font.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .regular)])
     }
 
-    func semibold(size: CGFloat = UIFont.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: UIFont.systemFont(ofSize: size, weight: .semibold)])
+    func semibold(size: CGFloat = Font.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .semibold)])
     }
 
-    func bold(font: UIFont? = nil, size: CGFloat = UIFont.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: UIFont.systemFont(ofSize: size, weight: .bold)])
-    }
-
-    var attributed: NSMutableAttributedString {
-        NSMutableAttributedString(string: self)
+    func bold(font: Font? = nil, size: CGFloat = Font.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .bold)])
     }
 
 }
 
-#if canImport(UIKit)
-import UIKit
-public typealias Color = UIColor
-#endif
-
-#if canImport(AppKit)
-import AppKit
-public typealias Color = NSColor
-#endif
+public extension String {
+    var attributed: NSMutableAttributedString {
+        NSMutableAttributedString(string: self)
+    }
+}
 
 public extension NSAttributedString {
 
