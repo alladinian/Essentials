@@ -12,13 +12,18 @@ import Foundation
 public extension Date {
 
     /// The year component of the date
-    var year: Int? {
-        Calendar.current.dateComponents([.year], from: self).year
+    var day: Int? {
+        Calendar.current.dateComponents([.day], from: self).day
     }
 
     /// The month component of the date
     var month: Int? {
         Calendar.current.dateComponents([.month], from: self).month
+    }
+
+    /// The year component of the date
+    var year: Int? {
+        Calendar.current.dateComponents([.year], from: self).year
     }
 
     /// The coming month from the date

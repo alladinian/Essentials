@@ -31,9 +31,9 @@ public extension Optional where Wrapped == String {
 
 public extension String {
 
-    /// Checks whether a string contains some text
-    /// - Parameter text: The text to check for
-    /// - Returns: Whether `text` is contained in the string
+    /// Checks whether a string contains some characters
+    /// - Parameter text: The text whose characters to check for
+    /// - Returns: Whether `text`'s characters are contained in the string
     func doesNotContain(_ text: String) -> Bool {
         let charset = CharacterSet(charactersIn: text)
         return self.rangeOfCharacter(from: charset) == nil
