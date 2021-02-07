@@ -5,8 +5,8 @@
 //  Created by Vasilis Akoinoglou on 18/1/21.
 //
 
-#if canImport(MKMapKit)
-import MKMapKit
+#if canImport(MapKit)
+import MapKit
 
 public extension MKPolygon {
 

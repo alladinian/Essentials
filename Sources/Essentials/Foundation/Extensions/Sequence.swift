@@ -9,9 +9,9 @@ import Foundation
 
 public extension Sequence {
 
-    /// Simplification for `objects.compactMap { $0 as? CastType }`
-    func castMap<CastType>(_ type: CastType.Type) -> [CastType] {
-        compactMap { $0 as? CastType }
+    /// Simplification for `objects.compactMap { $0 as? T }`
+    func castMap<T>(_ type: T.Type) -> [T] {
+        compactMap { $0 as? T }
     }
 
 }
