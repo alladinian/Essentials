@@ -133,3 +133,109 @@ extension ComparisonPredicate {
         self.init(leftExpression: ex1, rightExpression: ex2, modifier: .direct, type: op)
     }
 }
+
+//MARK: - Misc
+
+public extension NSCompoundPredicate {
+
+    /// Convenience initializer for a compound predicate from a generic dictionary
+    ///
+    /// - Parameter params: The params dictionary where each key must match the respective value in the predicate
+    convenience init(params: [String : Any]) {
+        var predicates = [NSPredicate]()
+        for (param, value) in params {
+            predicates.append(NSPredicate(format: "%K == %@", argumentArray: [param, value]))
+        }
+        self.init(andPredicateWithSubpredicates: predicates)
+    }
+
+}
+
+//MARK: - NSManagedObject
+
+extension NSFetchRequestResult where Self : NSManagedObject {
+
+    static var entityName: String {
+        return NSStringFromClass(self).components(separatedBy: ".").last!
+    }
+
+    @discardableResult
+    static func create(_ context: NSManagedObjectContext, params: [String : Any]? = nil) -> Self {
+        let object = NSEntityDescription.insertNewObject(forEntityName: self.entityName, into: context) as! Self
+        return object.update(context, params: params)
+    }
+
+    @discardableResult
+    func update(_ context: NSManagedObjectContext, params: [String : Any]? = nil) -> Self {
+
+        guard let params = params else {
+            return self
+        }
+
+        for (key, value) in params where entity.attributesByName.keys.contains(key) == true {
+            self.willChangeValue(forKey: key)
+            self.setValue(value, forKey: key)
+            self.didChangeValue(forKey: key)
+        }
+
+        return self
+    }
+
+    static func all(context: NSManagedObjectContext, includeProperties: Bool = true) -> [Self] {
+        return find(nil, context: context, includeProperties: includeProperties)
+    }
+
+    static func count(context: NSManagedObjectContext, predicate: NSPredicate? = nil) -> Int {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entityName)
+        fetchRequest.predicate = predicate
+        return (try? context.count(for: fetchRequest)) ?? 0
+    }
+
+    static func find(_ predicate: NSPredicate?, context: NSManagedObjectContext, includeProperties: Bool = true) -> [Self] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.includesPropertyValues = includeProperties
+        let matches = try? context.fetch(fetchRequest) as? [Self]
+        return matches ?? []
+    }
+
+    static func firstWithID(_ id: String, context: NSManagedObjectContext, includeProperties: Bool = true) -> Self? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.entityName)
+        let predicate = NSPredicate(format: "id == %@", id)
+        fetchRequest.predicate = predicate
+        fetchRequest.includesPropertyValues = includeProperties
+        let match = find(predicate, context: context)
+        return match.first
+    }
+
+    @discardableResult
+    static func findOrCreate(id: String, params: [String : Any], context: NSManagedObjectContext) -> Self {
+        if let item = firstWithID(id, context: context) {
+            return item
+        }
+        return create(context, params: params)
+    }
+
+    @discardableResult
+    static func createOrUpdate(id: String, params: [String : Any], context: NSManagedObjectContext) -> Self {
+        if let item = firstWithID(id, context: context) {
+            return item.update(context, params: params)
+        }
+        return create(context, params: params)
+    }
+
+    func safeForUse(context: NSManagedObjectContext?) -> Bool {
+        guard let _ = managedObjectContext, let context = context, !isDeleted else {
+            return false
+        }
+
+        do {
+            _ = try context.existingObject(with: objectID)
+        } catch {
+            debugPrint(error)
+            return false
+        }
+        return true
+    }
+
+}
