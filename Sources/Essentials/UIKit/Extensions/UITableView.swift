@@ -21,4 +21,21 @@ public extension UITableView {
 
 }
 
+//MARK: - Keyboard Handling
+
+public extension UITableView {
+
+    func dismissKeyboardOnTap() {
+        let tap = UITapGestureRecognizer()
+        tap.addTarget(self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        endEditing(true)
+    }
+
+}
+
 #endif

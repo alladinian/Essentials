@@ -26,3 +26,17 @@ public struct UserDefault<T> {
         }
     }
 }
+
+@propertyWrapper
+struct Trimmed {
+    private(set) var value: String = ""
+
+    var wrappedValue: String {
+        get { value }
+        set { value = newValue.trimmed }
+    }
+
+    init(wrappedValue: String) {
+        self.wrappedValue = wrappedValue
+    }
+}

@@ -60,6 +60,22 @@ public extension String {
         trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
+    func capitalizingFirstLetter(locale: Locale = Locale.current) -> String {
+        prefix(1).capitalized(with: locale) + dropFirst()
+    }
+
+    func lowercasingFirstLetter(locale: Locale = Locale.current) -> String {
+        prefix(1).lowercased(with: locale) + dropFirst()
+    }
+
+    // Greek transliterated version of a latin string
+    var transliterated: String {
+        let mutable = NSMutableString(string: self) as CFMutableString
+        CFStringTransform(mutable, nil, kCFStringTransformLatinGreek, false)
+        CFStringTransform(mutable, nil, kCFStringTransformStripCombiningMarks, false)
+        return mutable as String
+    }
+
 }
 
 //MARK: - Conversion

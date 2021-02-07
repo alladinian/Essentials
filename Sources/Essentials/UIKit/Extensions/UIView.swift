@@ -17,6 +17,7 @@ public extension UIView {
     }
 
     func pinEdges(to other: UIView) {
+        translatesAutoresizingMaskIntoConstraints                         = false
         leadingAnchor.constraint(equalTo: other.leadingAnchor).isActive   = true
         trailingAnchor.constraint(equalTo: other.trailingAnchor).isActive = true
         topAnchor.constraint(equalTo: other.topAnchor).isActive           = true
@@ -24,7 +25,10 @@ public extension UIView {
     }
 
     func fillContainer() {
-        guard let superview = superview else { return }
+        guard let superview = self.superview else {
+            print("Error! `superview` was nil – call `addSubview(view:)` before calling `fillContainer()` to fix this.")
+            return
+        }
         pinEdges(to: superview)
     }
 

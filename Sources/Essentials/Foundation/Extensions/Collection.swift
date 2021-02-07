@@ -18,6 +18,32 @@ extension Collection {
 
 }
 
+//MARK: - String Collections
+
+public extension Collection where Element == String {
+
+    var commaSeparated: String {
+        filter { $0.isEmpty == false }.joined(separator: ", ")
+    }
+
+}
+
+extension Collection where Element == String? {
+
+    var commaSeparated: String {
+        compactMap { $0 }.commaSeparated
+    }
+
+}
+
+public extension Collection where Element: StringProtocol {
+
+    func localizedStandardSorted(_ result: ComparisonResult) -> [Element] {
+        sorted { $0.localizedStandardCompare($1) == result }
+    }
+
+}
+
 //MARK: - Optionality
 
 public extension Optional where Wrapped: Collection {
