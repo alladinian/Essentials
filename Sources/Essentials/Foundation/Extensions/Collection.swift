@@ -11,8 +11,9 @@ import Foundation
 
 extension Collection {
 
-    func toJSONString() -> String? {
-        guard let json = try? JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted]) else { return nil }
+    func toJSONString(pretty: Bool = true) -> String? {
+        let options: JSONSerialization.WritingOptions = pretty ? [.prettyPrinted] : []
+        guard let json = try? JSONSerialization.data(withJSONObject: self, options: options) else { return nil }
         return String(data: json, encoding: .utf8)
     }
 
@@ -63,32 +64,36 @@ extension BidirectionalCollection where Iterator.Element: Equatable {
 
     typealias Element = Self.Iterator.Element
 
-    func after(_ item: Element, loop: Bool = false) -> Element? {
-        if let itemIndex = self.firstIndex(of: item) {
-            let lastItem: Bool = (index(after:itemIndex) == endIndex)
-            if loop && lastItem {
-                return self.first
-            } else if lastItem {
-                return nil
-            } else {
-                return self[index(after:itemIndex)]
-            }
+    func after(_ item: Element, cycle: Bool = false) -> Element? {
+        guard let itemIndex = self.firstIndex(of: item) else {
+            return nil
         }
-        return nil
+
+        let lastItem: Bool = (index(after:itemIndex) == endIndex)
+
+        if cycle && lastItem {
+            return self.first
+        } else if lastItem {
+            return nil
+        }
+
+        return self[index(after:itemIndex)]
     }
 
-    func before(_ item: Element, loop: Bool = false) -> Element? {
-        if let itemIndex = self.firstIndex(of: item) {
-            let firstItem: Bool = (itemIndex == startIndex)
-            if loop && firstItem {
-                return self.last
-            } else if firstItem {
-                return nil
-            } else {
-                return self[index(before:itemIndex)]
-            }
+    func before(_ item: Element, cycle: Bool = false) -> Element? {
+        guard let itemIndex = self.firstIndex(of: item) else {
+            return nil
         }
-        return nil
+
+        let firstItem: Bool = (itemIndex == startIndex)
+
+        if cycle && firstItem {
+            return self.last
+        } else if firstItem {
+            return nil
+        }
+
+        return self[index(before:itemIndex)]
     }
 
 }

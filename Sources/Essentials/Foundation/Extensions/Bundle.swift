@@ -18,7 +18,7 @@ public extension Bundle {
     }
 
     var composedVersionString: String {
-        [releaseVersionNumber, buildVersionNumber].compactMap({$0}).joined(separator: ".")
+        [releaseVersionNumber, buildVersionNumber].commaSeparated
     }
 
 }
