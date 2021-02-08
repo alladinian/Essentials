@@ -15,15 +15,12 @@ public struct UserDefault<T> {
     public init(_ key: String, defaultValue: T) {
         self.key = key
         self.defaultValue = defaultValue
+        UserDefaults.standard.register(defaults: [key: defaultValue])
     }
 
     public var wrappedValue: T {
-        get {
-            UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: key)
-        }
+        get { UserDefaults.standard.object(forKey: key) as? T ?? defaultValue }
+        set { UserDefaults.standard.set(newValue, forKey: key) }
     }
 }
 
