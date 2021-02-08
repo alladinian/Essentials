@@ -64,8 +64,33 @@ public extension String {
         prefix(1).capitalized(with: locale) + dropFirst()
     }
 
+    /// Lowers the first letter of the string
+    /// e.g. "People picker" gives "people picker", "Sports Stats" gives "sports Stats"
     func lowercasingFirstLetter(locale: Locale = Locale.current) -> String {
         prefix(1).lowercased(with: locale) + dropFirst()
+    }
+
+    /// If the string starts with only one uppercase letter, lowercase that first letter
+    /// If the string starts with multiple uppercase letters, lowercase those first letters
+    /// up to the one before the last uppercase one, but only if the last one is followed by
+    /// a lowercase character.
+    /// e.g. "PeoplePicker" gives "peoplePicker" but "URLChooser" gives "urlChooser"
+    var loweringFirstWord: String {
+        guard !isEmpty else { return "" }
+        let characterSet = CharacterSet.uppercaseLetters
+        let scalars      = unicodeScalars
+        let start        = scalars.startIndex
+        var idx          = start
+        while idx < scalars.endIndex, let scalar = UnicodeScalar(scalars[idx].value), characterSet.contains(scalar) {
+            idx = scalars.index(after: idx)
+        }
+        if idx > scalars.index(after: start) && idx < scalars.endIndex,
+           let scalar = UnicodeScalar(scalars[idx].value),
+           CharacterSet.lowercaseLetters.contains(scalar) {
+            idx = scalars.index(before: idx)
+        }
+        let transformed = String(scalars[start..<idx]).lowercased() + String(scalars[idx..<scalars.endIndex])
+        return transformed
     }
 
     // Greek transliterated version of a latin string
@@ -74,6 +99,33 @@ public extension String {
         CFStringTransform(mutable, nil, kCFStringTransformLatinGreek, false)
         CFStringTransform(mutable, nil, kCFStringTransformStripCombiningMarks, false)
         return mutable as String
+    }
+
+    /// This returns the snake cased variant of the string.
+    ///
+    /// - Parameter string: The string to snake_case
+    /// - Returns: The string snake cased from either snake_cased or camelCased string.
+    var snakeCased: String {
+        guard let longUpper = try? NSRegularExpression(pattern: "([A-Z\\d]+)([A-Z][a-z])", options: .dotMatchesLineSeparators),
+              let camelCased = try? NSRegularExpression(pattern: "([a-z\\d])([A-Z])", options: .dotMatchesLineSeparators)
+        else {
+            return self
+        }
+
+        let fullRange = NSRange(location: 0, length: unicodeScalars.count)
+        var result = longUpper.stringByReplacingMatches(
+            in: self,
+            options: .reportCompletion,
+            range: fullRange,
+            withTemplate: "$1_$2"
+        )
+        result = camelCased.stringByReplacingMatches(
+            in: result,
+            options: .reportCompletion,
+            range: fullRange,
+            withTemplate: "$1_$2"
+        )
+        return result.replacingOccurrences(of: "-", with: "_")
     }
 
 }
