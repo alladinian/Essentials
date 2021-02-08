@@ -14,16 +14,16 @@ import AppKit
 @available(macOS 10.11, *)
 public extension String {
 
-    func regular(size: CGFloat = Font.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .regular)])
+    func regular(size: CGFloat = EssentialFont.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: EssentialFont.systemFont(ofSize: size, weight: .regular)])
     }
 
-    func semibold(size: CGFloat = Font.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .semibold)])
+    func semibold(size: CGFloat = EssentialFont.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: EssentialFont.systemFont(ofSize: size, weight: .semibold)])
     }
 
-    func bold(font: Font? = nil, size: CGFloat = Font.systemFontSize) -> NSAttributedString {
-        NSAttributedString(string: self, attributes: [.font: Font.systemFont(ofSize: size, weight: .bold)])
+    func bold(font: EssentialFont? = nil, size: CGFloat = EssentialFont.systemFontSize) -> NSAttributedString {
+        NSAttributedString(string: self, attributes: [.font: EssentialFont.systemFont(ofSize: size, weight: .bold)])
     }
 
 }
@@ -37,7 +37,7 @@ public extension String {
 public extension NSAttributedString {
 
     /// Returns a colored attributed string
-    func colored(color: Color) -> NSMutableAttributedString {
+    func colored(color: EssentialColor) -> NSMutableAttributedString {
         let string = NSMutableAttributedString(attributedString: self)
         string.addAttributes([.foregroundColor: color], range: NSRange(location: 0, length: length))
         return string

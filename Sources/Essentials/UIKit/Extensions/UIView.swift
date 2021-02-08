@@ -83,29 +83,4 @@ public extension UIView {
 
 }
 
-//MARK: - Nibs
-
-public extension UIView {
-
-    class func fromNib(_ name: String? = nil) -> Self {
-        return fromNib(name, type: self)
-    }
-
-    class func fromNib<T: UIView>(_ name: String? = nil, type: T.Type) -> T {
-        return fromNib(name, type: T.self)!
-    }
-
-    class func fromNib<T: UIView>(_ name: String? = nil, type: T.Type) -> T? {
-        // Most nibs are demangled by practice, if not, just declare string explicitly
-        let name = name ?? nibName
-        let nibViews = Foundation.Bundle.main.loadNibNamed(name, owner: nil, options: nil)
-        return nibViews?.filter({ $0 is T }).last as? T
-    }
-
-    class var nibName: String {
-        return "\(self)".components(separatedBy: ".").first ?? ""
-    }
-
-}
-
 #endif
