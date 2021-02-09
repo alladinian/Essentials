@@ -10,15 +10,17 @@ import Foundation
 @propertyWrapper
 public struct UserDefault<T> {
     let key: String
-    let defaultValue: T
+    let defaultValue: T?
 
-    public init(_ key: String, defaultValue: T) {
+    public init(_ key: String, defaultValue: T? = nil) {
         self.key = key
         self.defaultValue = defaultValue
-        UserDefaults.standard.register(defaults: [key: defaultValue])
+        if let value = defaultValue {
+            UserDefaults.standard.register(defaults: [key: value])
+        }
     }
 
-    public var wrappedValue: T {
+    public var wrappedValue: T? {
         get { UserDefaults.standard.object(forKey: key) as? T ?? defaultValue }
         set { UserDefaults.standard.set(newValue, forKey: key) }
     }
