@@ -7,6 +7,9 @@
 
 import Foundation
 
+#if canImport(AppKit)
+import AppKit
+
 public extension EssentialFont {
     var path: String? {
         let fontRef  = CTFontDescriptorCreateWithNameAndSize(fontName as CFString, pointSize)
@@ -15,3 +18,5 @@ public extension EssentialFont {
         return fontPath
     }
 }
+
+#endif
