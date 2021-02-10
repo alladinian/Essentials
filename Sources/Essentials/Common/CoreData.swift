@@ -153,7 +153,7 @@ public extension NSCompoundPredicate {
 
 //MARK: - NSManagedObject
 
-extension NSFetchRequestResult where Self : NSManagedObject {
+public extension NSFetchRequestResult where Self : NSManagedObject {
 
     static var entityName: String {
         return NSStringFromClass(self).components(separatedBy: ".").last!
