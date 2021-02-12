@@ -11,6 +11,7 @@ import UIKit
 import AppKit
 #endif
 
+/*
 @available(macOS 10.11, *)
 public extension String {
 
@@ -27,6 +28,7 @@ public extension String {
     }
 
 }
+ */
 
 public extension String {
     var attributed: NSMutableAttributedString {

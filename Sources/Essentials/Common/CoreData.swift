@@ -151,6 +151,25 @@ public extension NSCompoundPredicate {
 
 }
 
+//MARK: - NSFetchedResultsController
+
+extension NSManagedObjectContext {
+
+    func fetchController<T: NSFetchRequestResult>(entityName: String = "\(T.self)", predicate: NSPredicate? = nil, sortedOn sortFields: [String]? = nil, sectionKey: String? = nil) -> NSFetchedResultsController<T> {
+        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
+        fetchRequest.predicate = predicate
+        if let fields = sortFields {
+            fetchRequest.sortDescriptors = fields.map { NSSortDescriptor.ascendingFor($0) }
+        }
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: self,
+                                                    sectionNameKeyPath: sectionKey,
+                                                    cacheName: nil)
+        return controller
+    }
+
+}
+
 //MARK: - NSManagedObject
 
 public extension NSFetchRequestResult where Self : NSManagedObject {
