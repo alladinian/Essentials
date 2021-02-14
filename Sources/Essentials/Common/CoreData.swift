@@ -153,6 +153,7 @@ public extension NSCompoundPredicate {
 
 //MARK: - NSFetchedResultsController
 
+@available(macOS 10.12, *)
 extension NSManagedObjectContext {
 
     func fetchController<T: NSFetchRequestResult>(entityName: String = "\(T.self)", predicate: NSPredicate? = nil, sortedOn sortFields: [String]? = nil, sectionKey: String? = nil) -> NSFetchedResultsController<T> {

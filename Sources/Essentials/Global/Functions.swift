@@ -14,3 +14,7 @@ public func print(_ error: Error) {
 public func onMain(_ block: @escaping () -> Void) {
     DispatchQueue.main.async(execute: block)
 }
+
+public func onBackground(qos: DispatchQoS.QoSClass = .default, _ block: @escaping () -> Void) {
+    DispatchQueue.global(qos: qos).async(execute: block)
+}
