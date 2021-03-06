@@ -60,7 +60,7 @@ public extension Optional where Wrapped: Collection {
 
 //MARK: - Access
 
-extension BidirectionalCollection where Iterator.Element: Equatable {
+public extension BidirectionalCollection where Iterator.Element: Equatable {
 
     typealias Element = Self.Iterator.Element
 
