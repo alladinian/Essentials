@@ -6,12 +6,12 @@
 //
 
 import Foundation
+import CoreGraphics
 
-/// Addition operator for CGSize structs
-/// - Parameters:
-///   - lhs: The first CGSize
-///   - rhs: The second CGSize
-/// - Returns: A new size after adding the two sizes
 public func +(lhs: CGSize, rhs: CGSize) -> CGSize {
     CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+}
+
+public func -(lhs: CGSize, rhs: CGSize) -> CGSize {
+    CGSize(width: lhs.width - rhs.width, height: lhs.height - rhs.height)
 }
