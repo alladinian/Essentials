@@ -12,13 +12,13 @@ import Combine
 
 // MARK: - Modifier Implementation
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-struct Draggable: ViewModifier {
+public struct Draggable: ViewModifier {
     @State var isDragging: Bool = false
 
     @State var offset: CGSize = .zero
     @State var dragOffset: CGSize = .zero
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         let drag = DragGesture().onChanged { (value) in
             offset     = dragOffset + value.translation
             isDragging = true
@@ -33,23 +33,23 @@ struct Draggable: ViewModifier {
 
 // MARK: - ViewBuilder Implementation
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-struct DraggableView<Content>: View where Content: View {
+public struct DraggableView<Content>: View where Content: View {
     let content: () -> Content
 
     init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         content().modifier(Draggable())
     }
 
 }
 
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-extension View {
+public extension View {
     func draggable() -> some View {
-        return self.modifier(Draggable())
+        modifier(Draggable())
     }
 }
 #endif
