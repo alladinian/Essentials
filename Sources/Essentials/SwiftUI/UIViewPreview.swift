@@ -27,8 +27,15 @@ public struct UIViewPreview<View: UIView>: UIViewRepresentable {
 public struct ViewPreview: View {
     let view: UIView
     var displayName: String? = nil
-    let schemes: [ColorScheme] = [.light]
-    let ignoreEdges: Edge.Set = .all
+    var schemes: [ColorScheme] = [.light]
+    var ignoreEdges: Edge.Set = .all
+
+    public init(view: UIView, displayName: String? = nil, schemes: [ColorScheme] = [.light], ignoreEdges: Edge.Set = .all) {
+        self.view        = view
+        self.displayName = displayName
+        self.schemes     = schemes
+        self.ignoreEdges = ignoreEdges
+    }
 
     public var body: some View {
         ForEach(schemes, id: \.self) { colorScheme in

@@ -21,7 +21,7 @@ public extension UILabel {
 
 //MARK: - Helpers
 
-extension UILabel {
+public extension UILabel {
 
     /// Wraps a label in a view
     /// Overcomes an issue with multiline labels

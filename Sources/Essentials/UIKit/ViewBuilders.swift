@@ -17,21 +17,19 @@ extension UIView: ViewProvider {
 }
 
 @_functionBuilder
-struct SubviewBuilder {
+public struct SubviewBuilder {
 
-    typealias ViewList = [UIView]
-
-    static func buildBlock(_ subviews: UIView...) -> ViewList {
+    public static func buildBlock(_ subviews: UIView...) -> [UIView] {
         subviews
     }
 
-    static func buildBlock(_ subviews: ViewList) -> ViewList {
+    public static func buildBlock(_ subviews: [UIView]) -> [UIView] {
         subviews
     }
 
 }
 
-extension SubviewBuilder {
+public extension SubviewBuilder {
 
     static func buildEither(first: UIView) -> UIView {
         first
@@ -44,9 +42,9 @@ extension SubviewBuilder {
 
 
 // MARK: - UIView
-protocol With {}
+public protocol With {}
 
-extension With where Self: AnyObject {
+public extension With where Self: AnyObject {
     // Note: The Swift compiler does not perform OS availability checks on properties referenced by keypaths
     @discardableResult
     func with<T>(_ property: ReferenceWritableKeyPath<Self, T>, setTo value: T) -> Self {
