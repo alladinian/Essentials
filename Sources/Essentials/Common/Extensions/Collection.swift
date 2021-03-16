@@ -9,8 +9,11 @@ import Foundation
 
 //MARK: - Conversion
 
-extension Collection {
+public extension Collection {
 
+    /// Convert a collection to a JSON string
+    /// - Parameter pretty: Whether the output is pretty printed. Default is true.
+    /// - Returns: The JSON representation of the collection
     func toJSONString(pretty: Bool = true) -> String? {
         let options: JSONSerialization.WritingOptions = pretty ? [.prettyPrinted] : []
         guard let json = try? JSONSerialization.data(withJSONObject: self, options: options) else { return nil }
@@ -23,14 +26,16 @@ extension Collection {
 
 public extension Collection where Element == String {
 
+    /// The non-empty elements of the collection, comma separated
     var commaSeparated: String {
         filter { $0.isEmpty == false }.joined(separator: ", ")
     }
 
 }
 
-extension Collection where Element == String? {
+public extension Collection where Element == String? {
 
+    /// The non-empty elements of the collection, comma separated
     var commaSeparated: String {
         compactMap { $0 }.commaSeparated
     }
@@ -39,6 +44,9 @@ extension Collection where Element == String? {
 
 public extension Collection where Element: StringProtocol {
 
+    /// The elements of the collection, sorted by `localizedStandardCompare`
+    /// - Parameter result: The ordering of the sorting
+    /// - Returns: The elements of the collection, sorted by `localizedStandardCompare`
     func localizedStandardSorted(_ result: ComparisonResult) -> [Element] {
         sorted { $0.localizedStandardCompare($1) == result }
     }
@@ -49,11 +57,9 @@ public extension Collection where Element: StringProtocol {
 
 public extension Optional where Wrapped: Collection {
 
+    /// The collection itself or an empty one if the optional is nil
     var orEmpty: [Wrapped.Iterator.Element] {
-        guard let collection = self as? [Wrapped.Iterator.Element] else {
-            return []
-        }
-        return collection
+        (self as? [Wrapped.Iterator.Element]) ?? []
     }
 
 }
@@ -64,36 +70,46 @@ public extension BidirectionalCollection where Iterator.Element: Equatable {
 
     typealias Element = Self.Iterator.Element
 
-    func after(_ item: Element, cycle: Bool = false) -> Element? {
-        guard let itemIndex = self.firstIndex(of: item) else {
+    /// Access the element after a given one
+    /// - Parameters:
+    ///   - element: The element that precedes
+    ///   - cycle: Whether collection should be treated as cyclical. Default is `false`.
+    /// - Returns: The element after `element` or `nil` if `element` could not be found
+    func elementAfter(_ element: Element, cycle: Bool = false) -> Element? {
+        guard let elementIndex = self.firstIndex(of: element) else {
             return nil
         }
 
-        let lastItem: Bool = (index(after:itemIndex) == endIndex)
+        let lastElement: Bool = (index(after:elementIndex) == endIndex)
 
-        if cycle && lastItem {
+        if cycle && lastElement {
             return self.first
-        } else if lastItem {
+        } else if lastElement {
             return nil
         }
 
-        return self[index(after:itemIndex)]
+        return self[index(after:elementIndex)]
     }
 
-    func before(_ item: Element, cycle: Bool = false) -> Element? {
-        guard let itemIndex = self.firstIndex(of: item) else {
+    /// Access the element before a given one
+    /// - Parameters:
+    ///   - element: The element that follows
+    ///   - cycle: Whether collection should be treated as cyclical. Default is `false`.
+    /// - Returns: The element before `element` or `nil` if `element` could not be found
+    func elementBefore(_ element: Element, cycle: Bool = false) -> Element? {
+        guard let elementIndex = self.firstIndex(of: element) else {
             return nil
         }
 
-        let firstItem: Bool = (itemIndex == startIndex)
+        let firstElement: Bool = (elementIndex == startIndex)
 
-        if cycle && firstItem {
+        if cycle && firstElement {
             return self.last
-        } else if firstItem {
+        } else if firstElement {
             return nil
         }
 
-        return self[index(before:itemIndex)]
+        return self[index(before:elementIndex)]
     }
 
 }

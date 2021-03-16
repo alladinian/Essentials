@@ -10,10 +10,14 @@
 import AppKit
 
 public extension NSImage {
-    func image(with tintColor: NSColor) -> NSImage {
+
+    /// Produce a copy of the image after tinting
+    /// - Parameter color: The tint color
+    /// - Returns: A new tinted image
+    func withTintColor(_ color: NSColor) -> NSImage {
         guard let image = self.copy() as? NSImage else { return self }
         image.lockFocus()
-        tintColor.set()
+        color.set()
         let imageRect = NSRect(origin: .zero, size: image.size)
         imageRect.fill(using: .sourceIn)
         image.unlockFocus()
@@ -21,6 +25,7 @@ public extension NSImage {
         return image
     }
 
+    /// The image as CGImage
     @objc var cgImage: CGImage? {
         get {
             guard let imageData = self.tiffRepresentation else { return nil }
@@ -28,6 +33,7 @@ public extension NSImage {
             return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
         }
     }
+
 }
 
 #endif

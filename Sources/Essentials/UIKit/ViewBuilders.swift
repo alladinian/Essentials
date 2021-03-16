@@ -56,9 +56,11 @@ public extension With where Self: AnyObject {
 extension UIView: With {}
 
 //MARK: - View
-public func View(@SubviewBuilder _ content: () -> [UIView]) -> UIView {
-    let view = UIView()
+public func View<V>(@SubviewBuilder _ content: () -> [UIView]) -> V where V : UIView {
+    let view = V()
+    view.translatesAutoresizingMaskIntoConstraints = false
     for subview in content() {
+        subview.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(subview)
     }
     return view

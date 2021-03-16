@@ -25,15 +25,15 @@ final class EssentialsTests: XCTestCase {
         XCTAssertEqual(Optional.some([1, 2, 3]).orEmpty, [1, 2, 3])
 
         let a = [1, 2, 3]
-        XCTAssertEqual(a.after(2), 3)
-        XCTAssertNil(a.after(3))
-        XCTAssertNil(a.after(4))
-        XCTAssertEqual(a.after(3, cycle: true), 1)
+        XCTAssertEqual(a.elementAfter(2), 3)
+        XCTAssertNil(a.elementAfter(3))
+        XCTAssertNil(a.elementAfter(4))
+        XCTAssertEqual(a.elementAfter(3, cycle: true), 1)
 
-        XCTAssertEqual(a.before(2), 1)
-        XCTAssertNil(a.before(1))
-        XCTAssertNil(a.before(4))
-        XCTAssertEqual(a.before(1, cycle: true), 3)
+        XCTAssertEqual(a.elementBefore(2), 1)
+        XCTAssertNil(a.elementBefore(1))
+        XCTAssertNil(a.elementBefore(4))
+        XCTAssertEqual(a.elementBefore(1, cycle: true), 3)
     }
 
     func testDate() {

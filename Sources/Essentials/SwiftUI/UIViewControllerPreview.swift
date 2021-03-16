@@ -31,12 +31,13 @@ public struct ControllerPreview: View {
     var ignoreEdges: Edge.Set = .all
     var device: String = "iPhone 11"
 
-    let nav = UINavigationController()
+    let nav: UINavigationController
     let empty = UIViewController()
 
-    public init(controller: UIViewController, navigation: Bool = false, isNavigationRoot: Bool = false, schemes: [ColorScheme] = [.light], ignoreEdges: Edge.Set = .all, device: String = "iPhone 11") {
+    public init(controller: UIViewController, navigation: Bool = false, isNavigationRoot: Bool = false, navController: UINavigationController = UINavigationController(), schemes: [ColorScheme] = [.light], ignoreEdges: Edge.Set = .all, device: String = "iPhone 11") {
         self.controller       = controller
         self.navigation       = navigation
+        self.nav              = navController
         self.isNavigationRoot = isNavigationRoot
         self.schemes          = schemes
         self.ignoreEdges      = ignoreEdges
