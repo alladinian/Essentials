@@ -26,9 +26,22 @@ import AppKit
 
 public extension URL {
     var isImage: Bool {
-        guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as CFString, nil) else { return false }
-        return UTTypeConformsTo((uti.takeRetainedValue()), kUTTypeImage)
+        guard let identifier = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as CFString, nil) else { return false }
+        return UTTypeConformsTo((identifier.takeRetainedValue()), kUTTypeImage)
     }
 
+}
+
+public extension URL {
+    func thumbnailImage(size: NSSize) -> NSImage? {
+        guard self.isImage else { return nil }
+        guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, nil) else { return nil }
+        let options = [
+            kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
+            kCGImageSourceCreateThumbnailFromImageAlways: true // Cache the image
+        ] as [CFString : Any]
+        guard let scaledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary) else { return nil }
+        return NSImage(cgImage: scaledImage, size: .zero) // .zero here means use image's size
+    }
 }
 #endif
