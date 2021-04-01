@@ -19,6 +19,14 @@ extension UIView: ViewProvider {
 @_functionBuilder
 public struct SubviewBuilder {
 
+    public static func buildBlock(_ subview: UIView) -> UIView {
+        subview
+    }
+
+    public static func buildBlock(_ subview: UIView) -> [UIView] {
+        [subview]
+    }
+
     public static func buildBlock(_ subviews: UIView...) -> [UIView] {
         subviews
     }

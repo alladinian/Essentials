@@ -17,3 +17,9 @@ public func +(lhs: CGSize, rhs: CGSize) -> CGSize {
 public func -(lhs: CGSize, rhs: CGSize) -> CGSize {
     CGSize(width: lhs.width - rhs.width, height: lhs.height - rhs.height)
 }
+
+public extension CGSize {
+    init(_ width: CGFloat, _ height: CGFloat) {
+        self.init(width: width, height: height)
+    }
+}
