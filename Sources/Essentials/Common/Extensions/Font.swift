@@ -17,6 +17,12 @@ public extension EssentialFont {
         let fontPath = (url as! NSURL).path
         return fontPath
     }
+
+    var faceName: String {
+        let family   = familyName ?? ""
+        let fullName = displayName ?? ""
+        return fullName.replacingOccurrences(of: family, with: "").trimmed
+    }
 }
 
 #endif

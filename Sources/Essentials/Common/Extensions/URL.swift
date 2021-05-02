@@ -23,6 +23,7 @@ extension URL: ExpressibleByStringLiteral {
 
 #if canImport(AppKit)
 import AppKit
+import UniformTypeIdentifiers
 
 public extension URL {
     var isImage: Bool {
@@ -35,11 +36,16 @@ public extension URL {
 public extension URL {
     func thumbnailImage(size: NSSize) -> NSImage? {
         guard self.isImage else { return nil }
-        guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, nil) else { return nil }
+        let imageSourceOptions = [kCGImageSourceShouldCache : false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithURL(self as CFURL, imageSourceOptions) else { return nil }
+        let maxDimension: CGFloat = max(size.width, size.height) * (NSScreen.main?.backingScaleFactor ?? 1.0)
         let options = [
-            kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
-            kCGImageSourceCreateThumbnailFromImageAlways: true // Cache the image
-        ] as [CFString : Any]
+            kCGImageSourceCreateThumbnailFromImageAlways: true, // Cache the image
+            kCGImageSourceShouldCacheImmediately: true,
+            kCGImageSourceCreateThumbnailWithTransform : true,
+            kCGImageSourceThumbnailMaxPixelSize : maxDimension,
+            //kCGImageSourceCreateThumbnailFromImageIfAbsent : true,
+        ] as CFDictionary
         guard let scaledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary) else { return nil }
         return NSImage(cgImage: scaledImage, size: .zero) // .zero here means use image's size
     }
