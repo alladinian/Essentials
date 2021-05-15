@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public extension CGRect {
     /** Creates a rectangle with the given center and dimensions
