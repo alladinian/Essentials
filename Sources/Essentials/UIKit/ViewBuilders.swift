@@ -16,7 +16,7 @@ extension UIView: ViewProvider {
     var body: UIView { self }
 }
 
-@_functionBuilder
+@resultBuilder
 public struct SubviewBuilder {
 
     public static func buildBlock(_ subview: UIView) -> UIView {
