@@ -21,7 +21,7 @@ extension URL: ExpressibleByStringLiteral {
     }
 }
 
-#if canImport(AppKit)
+#if TARGET_OS_MAC
 import AppKit
 import UniformTypeIdentifiers
 

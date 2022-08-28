@@ -10,6 +10,6 @@ public typealias EssentialView  = UIView
 import AppKit
 public typealias EssentialFont  = NSFont
 public typealias EssentialColor = NSColor
-public typealias EssentialView = NSView
+public typealias EssentialView  = NSView
 
 #endif
