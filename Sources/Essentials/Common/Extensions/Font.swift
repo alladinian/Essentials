@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if TARGET_OS_MAC
+#if os(macOS)
 import AppKit
 
 public extension EssentialFont {
