@@ -5,7 +5,7 @@
 //  Created by Vasilis Akoinoglou on 8/2/21.
 //
 
-#if TARGET_OS_MAC
+#if os(macOS)
 
 import AppKit
 
