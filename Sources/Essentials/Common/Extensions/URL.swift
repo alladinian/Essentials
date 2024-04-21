@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Combine
 
-@available(OSX 10.13, iOS 11.0, *)
+@available(macOS 10.13, iOS 11.0, *)
 public extension URL {
     var asURLItemProvider: NSItemProvider {
         NSItemProvider(object: self as NSURL)
@@ -21,7 +22,49 @@ extension URL: ExpressibleByStringLiteral {
     }
 }
 
-#if os(macOS)
+enum ItemProviderError: Error {
+    case invalidFileURLData
+    case invalidFileURL
+}
+
+@available(macOS 11.0, iOS 13.0, *)
+public extension Array where Element == NSItemProvider {
+
+    // Provide a publisher for generating urls from item providers
+    var urlPublisher: AnyPublisher<[URL], Error> {
+        func urlForItemProvider(_ provider: NSItemProvider) -> Future<URL, Error> {
+            Future { promise in
+                provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { (data, error) in
+
+                    guard error == nil else {
+                        promise(.failure(error!))
+                        return
+                    }
+
+                    guard let data = data as? Data else {
+                        promise(.failure(ItemProviderError.invalidFileURLData))
+                        return
+                    }
+
+                    guard let url = URL(dataRepresentation: data, relativeTo: nil) else {
+                        promise(.failure(ItemProviderError.invalidFileURL))
+                        return
+                    }
+
+                    return promise(.success(url))
+                }
+            }
+        }
+
+        return Publishers
+            .MergeMany(map(urlForItemProvider))
+            .collect()
+            .eraseToAnyPublisher()
+    }
+
+}
+
+#if canImport(AppKit)
 import AppKit
 import UniformTypeIdentifiers
 
