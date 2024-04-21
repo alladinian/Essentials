@@ -113,3 +113,58 @@ public extension BidirectionalCollection where Iterator.Element: Equatable {
     }
 
 }
+
+// MARK: - Cyclic Iterator
+
+public struct CyclicIterator<T: Equatable>: IteratorProtocol {
+    let array: [T]
+    var index = 0
+    var passes = 0
+
+    init(_ array: [T]) {
+        self.array = array
+    }
+
+    mutating public func next() -> T? {
+        if index >= array.count {
+            index = 0
+            passes += 1
+        }
+        let element = array[index]
+        index += 1
+        return element
+    }
+
+    mutating public func previous() -> T? {
+        if index < 0 {
+            index = array.count - 1
+            passes += 1
+        }
+        let element = array[index]
+        index -= 1
+        return element
+    }
+
+    mutating public func forwardDelta(fromIndex index: Int, to: T) -> Int {
+        let start = array[index]
+        guard start != to else { return 0 }
+        self.index = index
+        var delta = 0
+        while next() != to, passes < 3 {
+            delta += 1
+        }
+        return delta
+    }
+
+    mutating public func backwardDelta(fromIndex index: Int, to: T) -> Int {
+        let start = array[index]
+        guard start != to else { return 0 }
+        self.index = index
+        var delta = 0
+        while previous() != to, passes < 3 {
+            delta += 1
+        }
+        return delta
+    }
+
+}

@@ -19,7 +19,7 @@ public extension CGRect {
 
     /** the coordinates of this rectangles center */
     var center: CGPoint {
-        get { return CGPoint(x: centerX, y: centerY) }
+        get { CGPoint(x: centerX, y: centerY) }
         set { centerX = newValue.x; centerY = newValue.y }
     }
 
@@ -28,7 +28,7 @@ public extension CGRect {
      - returns: The x-coordinate of the center
      */
     var centerX: CGFloat {
-        get { return midX }
+        get { midX }
         set { origin.x = newValue - width * 0.5 }
     }
 
@@ -37,7 +37,7 @@ public extension CGRect {
      - returns: The y-coordinate of the center
      */
     var centerY: CGFloat {
-        get { return midY }
+        get { midY }
         set { origin.y = newValue - height * 0.5 }
     }
 
