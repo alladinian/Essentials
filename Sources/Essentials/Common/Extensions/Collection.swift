@@ -114,6 +114,21 @@ public extension BidirectionalCollection where Iterator.Element: Equatable {
 
 }
 
+// MARK: - Shifting
+
+public extension Array {
+
+    func shifted(by shiftAmount: Int) -> Array<Element> {
+        guard count > 0, (shiftAmount % count) != 0 else { return self }
+        let moduloShiftAmount    = shiftAmount % count
+        let negativeShift        = shiftAmount < 0
+        let effectiveShiftAmount = negativeShift ? moduloShiftAmount + count : moduloShiftAmount
+        let shift: (Int) -> Int  = { $0 + effectiveShiftAmount >= count ? $0 + effectiveShiftAmount - count : $0 + effectiveShiftAmount }
+        return enumerated().sorted(by: { shift($0.offset) < shift($1.offset) }).map(\.element)
+    }
+
+}
+
 // MARK: - Cyclic Iterator
 
 public struct CyclicIterator<T: Equatable>: IteratorProtocol {

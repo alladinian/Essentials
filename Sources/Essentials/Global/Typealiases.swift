@@ -13,3 +13,7 @@ public typealias EssentialColor = NSColor
 public typealias EssentialView  = NSView
 
 #endif
+
+public typealias Radians = CGFloat
+
+public let π = CGFloat.pi
