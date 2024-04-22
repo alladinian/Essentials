@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UniformTypeIdentifiers
 
 @available(macOS 10.13, iOS 11.0, *)
 public extension URL {
@@ -27,7 +28,7 @@ enum ItemProviderError: Error {
     case invalidFileURL
 }
 
-@available(macOS 11.0, iOS 13.0, *)
+@available(macOS 11.0, iOS 14.0, *)
 public extension Array where Element == NSItemProvider {
 
     // Provide a publisher for generating urls from item providers
